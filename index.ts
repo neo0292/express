@@ -58,6 +58,7 @@ app.route('/api/users/:id')
       const reqid = Number(req.params.id);
       console.log("requested id is:",reqid);
       const body = req.body;
+      delete users[reqid-1];
       users.push({...body});
       console.log(`user with id ${reqid} is updated as`, body);
       fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err,data)=>{
@@ -67,8 +68,10 @@ app.route('/api/users/:id')
       
     })
     .delete((req,res)=>{
+      const reqid = Number(req.params.id);
+      delete users[reqid-1];
 
-      return res.json({status:"pending"});
+      return res.json({status:"success", idDeleted:`${reqid}`});
     });
 
 app.post('/api/users',(req,res)=>{
