@@ -55,9 +55,16 @@ app.route('/api/users/:id')
       })
     
     .patch((req,res)=>{
-      const reqid = Number(req.body.id);
-      const update= req.body;
-      return res.json({status:"pendings"});
+      const reqid = Number(req.params.id);
+      console.log("requested id is:",reqid);
+      const body = req.body;
+      users.push({...body});
+      console.log(`user with id ${reqid} is updated as`, body);
+      fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err,data)=>{
+        return res.json(users);
+      });
+
+      
     })
     .delete((req,res)=>{
 
@@ -67,7 +74,7 @@ app.route('/api/users/:id')
 app.post('/api/users',(req,res)=>{
   const body = req.body;
   //console.log("entered data is:",newUser);
-  users.push({...body, id:users.length+1}); // add body to users array as it but change id no
+  users.push({...body, id:users.length+1}); // add body to users array as it is but change id no
   fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
     return res.json({ststus:"success", id:users.length});
   })
